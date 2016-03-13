@@ -139,7 +139,6 @@
     
     UIImageView *dummyIV = [self dummyImageView];
     dummyIV.frame = [containerView convertRect:_fromImageView.frame fromView:_fromImageView.superview];
-    
     [containerView addSubview:dummyIV];
     
     UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];

@@ -86,8 +86,8 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)pinchGesture:(UIPinchGestureRecognizer *)recognizer {
-
+- (void)interactiveGesture:(UIGestureRecognizer *)recognizer {
+    
     _statusBarHidden = (_currentViewer.scrollView.zoomScale > 1.0);
     [self setNeedsStatusBarAppearanceUpdate];
     
@@ -98,9 +98,23 @@
         return;
     }
     
-    CGFloat scale = recognizer.scale;
     CGAffineTransform transfrom = self.view.transform;
-    transfrom = CGAffineTransformScale(transfrom, scale, scale);
+    
+    if ([recognizer isKindOfClass:[UIPinchGestureRecognizer class]]) {
+        UIPinchGestureRecognizer *pinch = (UIPinchGestureRecognizer *)recognizer;
+        
+        CGFloat scale = pinch.scale;
+        transfrom = CGAffineTransformScale(transfrom, scale, scale);
+        
+        pinch.scale = 1.0;
+    } else if ([recognizer isKindOfClass:[UIRotationGestureRecognizer class]]) {
+        UIRotationGestureRecognizer *rotate = (UIRotationGestureRecognizer *)recognizer;
+        
+        CGFloat rotation = rotate.rotation;
+        transfrom = CGAffineTransformRotate(transfrom, rotation);
+        
+        rotate.rotation = 0;
+    }
     
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
@@ -116,8 +130,6 @@
         default:
             break;
     }
-    
-    recognizer.scale = 1.0;
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -186,10 +198,13 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.view addGestureRecognizer:tap];
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(interactiveGesture:)];
     [self.view addGestureRecognizer:pinch];
+    UIRotationGestureRecognizer *rotate = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(interactiveGesture:)];
+    [self.view addGestureRecognizer:rotate];
     
     pinch.delegate = self;
+    rotate.delegate = self;
     
     _currentViewer = viewer;
 }
