@@ -35,7 +35,8 @@
         urlString = [urlString stringByReplacingOccurrencesOfString:@"/bmiddle/" withString:@"/large/"];
         _url = [NSURL URLWithString:urlString];
         _photoIndex = photoIndex;
-        _placeholder = placeholder;
+        
+        _placeholder = [UIImage imageWithCGImage:placeholder.CGImage scale:1.0 orientation:placeholder.imageOrientation];
     }
     return self;
 }
