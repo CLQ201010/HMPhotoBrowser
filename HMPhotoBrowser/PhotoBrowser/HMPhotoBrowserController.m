@@ -41,7 +41,7 @@
         _statusBarHidden = NO;
         
         self.modalPresentationStyle = UIModalPresentationCustom;
-        _animator = [[HMPhotoBrowserAnimator alloc] init];
+        _animator = [HMPhotoBrowserAnimator animatorWithPhotos:_photos];
         self.transitioningDelegate = _animator;
     }
     return self;

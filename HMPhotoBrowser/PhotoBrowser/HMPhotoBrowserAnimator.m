@@ -7,6 +7,8 @@
 //
 
 #import "HMPhotoBrowserAnimator.h"
+#import "HMPhotoBrowserPhotos.h"
+@import YYWebImage;
 
 @interface HMPhotoBrowserAnimator() <UIViewControllerAnimatedTransitioning>
 
@@ -14,6 +16,20 @@
 
 @implementation HMPhotoBrowserAnimator {
     BOOL _isPresenting;
+    HMPhotoBrowserPhotos *_photos;
+}
+
+#pragma mark - 构造函数
++ (instancetype)animatorWithPhotos:(HMPhotoBrowserPhotos *)photos {
+    return [[self alloc] initWithPhotos:photos];
+}
+
+- (instancetype)initWithPhotos:(HMPhotoBrowserPhotos *)photos {
+    self = [super init];
+    if (self) {
+        _photos = photos;
+    }
+    return self;
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
@@ -33,25 +49,86 @@
 
 #pragma mark - UIViewControllerAnimatedTransitioning
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-    return 0.25;
+    return 0.5;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     _isPresenting ? [self presentTransition:transitionContext] : [self dismissTransition:transitionContext];
 }
 
+#pragma mark - 展现转场动画方法
 - (void)presentTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     
     UIView *containerView = [transitionContext containerView];
+    
+    UIImageView *dummyIV = [self dummyImageView];
+    UIImageView *parentIV = [self parentImageView];
+    dummyIV.frame = [containerView convertRect:parentIV.frame fromView:parentIV.superview];
+    [containerView addSubview:dummyIV];
+    
     UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
     [containerView addSubview:toView];
-    
     toView.alpha = 0.0;
+    
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-        toView.alpha = 1.0;
+        dummyIV.frame = [self presentRectWithImageView:dummyIV];
     } completion:^(BOOL finished) {
-        [transitionContext completeTransition:YES];
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
+            toView.alpha = 1.0;
+        } completion:^(BOOL finished) {
+            
+            [transitionContext completeTransition:YES];
+        }];
     }];
+}
+
+/// 根据图像计算展现目标尺寸
+- (CGRect)presentRectWithImageView:(UIImageView *)imageView {
+    UIImage *image = imageView.image;
+    
+    if (image == nil) {
+        return imageView.frame;
+    }
+    
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    CGSize imageSize = screenSize;
+    
+    imageSize.height = image.size.height * imageSize.width / image.size.width;
+    
+    CGRect rect = CGRectMake(0, 0, imageSize.width, imageSize.height);
+    
+    if (imageSize.height < screenSize.height) {
+        rect.origin.y = (screenSize.height - imageSize.height) * 0.5;
+    }
+    
+    return rect;
+}
+
+/// 生成 dummy 图像视图
+- (UIImageView *)dummyImageView {
+    UIImageView *iv = [[UIImageView alloc] initWithImage:[self dummyImage]];
+    
+    iv.contentMode = UIViewContentModeScaleAspectFill;
+    iv.clipsToBounds = YES;
+    
+    return iv;
+}
+
+/// 生成 dummy 图像
+- (UIImage *)dummyImage {
+    
+    NSString *key = _photos.urls[_photos.selectedIndex];
+    UIImage *image = [[YYWebImageManager sharedManager].cache getImageForKey:key];
+    
+    if (image == nil) {
+        image = _photos.parentImageViews[_photos.selectedIndex].image;
+    }
+    return image;
+}
+
+/// 父视图参考图像视图
+- (UIImageView *)parentImageView {
+    return _photos.parentImageViews[_photos.selectedIndex];
 }
 
 - (void)dismissTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -65,5 +142,6 @@
         [transitionContext completeTransition:YES];
     }];
 }
+
 
 @end
