@@ -144,8 +144,7 @@
 				C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */,
 				C2B050F71C951AB300624EF8 /* HMPhotoViewerController.h */,
 				C2B050F81C951AB300624EF8 /* HMPhotoViewerController.m */,
-				C2B0512E1C95E16100624EF8 /* HMPhotoProgressView.h */,
-				C2B0512F1C95E16100624EF8 /* HMPhotoProgressView.m */,
+				C2B051311C95E5BF00624EF8 /* View */,
 				C2B0512D1C95E13000624EF8 /* Animator */,
 				C2B051001C951C3700624EF8 /* Model */,
 			);
@@ -168,6 +167,15 @@
 				C2B0512B1C95658E00624EF8 /* HMPhotoBrowserAnimator.m */,
 			);
 			name = Animator;
+			sourceTree = "<group>";
+		};
+		C2B051311C95E5BF00624EF8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C2B0512E1C95E16100624EF8 /* HMPhotoProgressView.h */,
+				C2B0512F1C95E16100624EF8 /* HMPhotoProgressView.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
