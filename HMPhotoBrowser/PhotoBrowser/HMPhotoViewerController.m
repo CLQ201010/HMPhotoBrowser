@@ -16,7 +16,7 @@
 
 @implementation HMPhotoViewerController {
     UIScrollView *_scrollView;
-    UIImageView *_imageView;
+    YYAnimatedImageView *_imageView;
     HMPhotoProgressView *_progressView;
     
     NSURL *_url;
@@ -92,7 +92,7 @@
     _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:_scrollView];
     
-    _imageView = [[UIImageView alloc] initWithImage:_placeholder];
+    _imageView = [[YYAnimatedImageView alloc] initWithImage:_placeholder];
     _imageView.center = self.view.center;
     [_scrollView addSubview:_imageView];
     
