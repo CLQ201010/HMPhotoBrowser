@@ -21,6 +21,7 @@
     HMPhotoBrowserAnimator *_animator;
     
     HMPhotoViewerController *_currentViewer;
+    UIButton *_pageCountButton;
 }
 
 #pragma mark - 构造函数
@@ -95,6 +96,7 @@
         self.view.backgroundColor = [UIColor blackColor];
         self.view.transform = CGAffineTransformIdentity;
         self.view.alpha = 1.0;
+        _pageCountButton.hidden = (_photos.urls.count == 1);
         
         return;
     }
@@ -120,6 +122,7 @@
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
         case UIGestureRecognizerStateChanged:
+            _pageCountButton.hidden = YES;
             self.view.backgroundColor = [UIColor clearColor];
             self.view.transform = transfrom;
             self.view.alpha = transfrom.a;
@@ -174,6 +177,22 @@
     
     _photos.selectedIndex = viewer.photoIndex;
     _currentViewer = viewer;
+    
+    [self setPageButtonIndex:viewer.photoIndex];
+}
+
+- (void)setPageButtonIndex:(NSInteger)index {
+    _pageCountButton.hidden = (_photos.urls.count == 1);
+    
+    NSMutableAttributedString *attributeText = [[NSMutableAttributedString alloc]
+                                                initWithString:[NSString stringWithFormat:@"%zd", index + 1]
+                                                attributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:18],
+                                                             NSForegroundColorAttributeName: [UIColor whiteColor]}];
+    [attributeText appendAttributedString:[[NSAttributedString alloc]
+                                           initWithString:[NSString stringWithFormat:@" / %zd", _photos.urls.count]
+                                           attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],
+                                                        NSForegroundColorAttributeName: [UIColor whiteColor]}]];
+    [_pageCountButton setAttributedTitle:attributeText forState:UIControlStateNormal];
 }
 
 #pragma mark - 设置界面
@@ -210,6 +229,18 @@
     rotate.delegate = self;
     
     _currentViewer = viewer;
+    
+    _pageCountButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 40)];
+    CGPoint center = self.view.center;
+    center.y = _pageCountButton.bounds.size.height;
+    _pageCountButton.center = center;
+    
+    _pageCountButton.layer.cornerRadius = 6;
+    _pageCountButton.layer.masksToBounds = YES;
+    
+    _pageCountButton.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.6];
+    [self setPageButtonIndex:_photos.selectedIndex];
+    [self.view addSubview:_pageCountButton];
 }
 
 @end
