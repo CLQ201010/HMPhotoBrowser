@@ -88,7 +88,10 @@
 
 - (void)pinchGesture:(UIPinchGestureRecognizer *)recognizer {
 
-    if (_currentViewer.scrollView.zoomScale > 1.0) {
+    _statusBarHidden = (_currentViewer.scrollView.zoomScale > 1.0);
+    [self setNeedsStatusBarAppearanceUpdate];
+    
+    if (_statusBarHidden) {
         self.view.backgroundColor = [UIColor blackColor];
         self.view.transform = CGAffineTransformIdentity;
         
