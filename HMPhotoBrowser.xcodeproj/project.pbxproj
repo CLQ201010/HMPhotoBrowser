@@ -16,6 +16,9 @@
 		C25A038B1C8E03C9008092BC /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C25A038A1C8E03C9008092BC /* MainViewController.m */; };
 		C2B050EE1C95175F00624EF8 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050EB1C95175F00624EF8 /* PhotoCell.m */; };
 		C2B050EF1C95175F00624EF8 /* PhotoUrls.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050ED1C95175F00624EF8 /* PhotoUrls.m */; };
+		C2B050F91C951AB300624EF8 /* HMPhotoViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050F81C951AB300624EF8 /* HMPhotoViewerController.m */; };
+		C2B050FC1C951B0300624EF8 /* HMPhotoBrowserPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050FB1C951B0300624EF8 /* HMPhotoBrowserPhotos.m */; };
+		C2B050FF1C951C0D00624EF8 /* HMPhotoBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,12 @@
 		C2B050EB1C95175F00624EF8 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 		C2B050EC1C95175F00624EF8 /* PhotoUrls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoUrls.h; sourceTree = "<group>"; };
 		C2B050ED1C95175F00624EF8 /* PhotoUrls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoUrls.m; sourceTree = "<group>"; };
+		C2B050F71C951AB300624EF8 /* HMPhotoViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMPhotoViewerController.h; sourceTree = "<group>"; };
+		C2B050F81C951AB300624EF8 /* HMPhotoViewerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMPhotoViewerController.m; sourceTree = "<group>"; };
+		C2B050FA1C951B0300624EF8 /* HMPhotoBrowserPhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMPhotoBrowserPhotos.h; sourceTree = "<group>"; };
+		C2B050FB1C951B0300624EF8 /* HMPhotoBrowserPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMPhotoBrowserPhotos.m; sourceTree = "<group>"; };
+		C2B050FD1C951C0D00624EF8 /* HMPhotoBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMPhotoBrowserController.h; sourceTree = "<group>"; };
+		C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMPhotoBrowserController.m; sourceTree = "<group>"; };
 		E45CFE3131DB15C9E4719108 /* Pods_HMPhotoBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HMPhotoBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -88,6 +97,7 @@
 		C25A03711C8E002E008092BC /* HMPhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				C2B050F01C9519F500624EF8 /* PhotoBrowser */,
 				C2B050E91C95175F00624EF8 /* Demo */,
 				C25A03751C8E002E008092BC /* AppDelegate.h */,
 				C25A03761C8E002E008092BC /* AppDelegate.m */,
@@ -119,6 +129,27 @@
 				C2B050ED1C95175F00624EF8 /* PhotoUrls.m */,
 			);
 			path = Demo;
+			sourceTree = "<group>";
+		};
+		C2B050F01C9519F500624EF8 /* PhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				C2B050FD1C951C0D00624EF8 /* HMPhotoBrowserController.h */,
+				C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */,
+				C2B050F71C951AB300624EF8 /* HMPhotoViewerController.h */,
+				C2B050F81C951AB300624EF8 /* HMPhotoViewerController.m */,
+				C2B051001C951C3700624EF8 /* Model */,
+			);
+			path = PhotoBrowser;
+			sourceTree = "<group>";
+		};
+		C2B051001C951C3700624EF8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C2B050FA1C951B0300624EF8 /* HMPhotoBrowserPhotos.h */,
+				C2B050FB1C951B0300624EF8 /* HMPhotoBrowserPhotos.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,7 +274,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2B050EE1C95175F00624EF8 /* PhotoCell.m in Sources */,
+				C2B050FC1C951B0300624EF8 /* HMPhotoBrowserPhotos.m in Sources */,
+				C2B050F91C951AB300624EF8 /* HMPhotoViewerController.m in Sources */,
 				C25A03771C8E002E008092BC /* AppDelegate.m in Sources */,
+				C2B050FF1C951C0D00624EF8 /* HMPhotoBrowserController.m in Sources */,
 				C25A038B1C8E03C9008092BC /* MainViewController.m in Sources */,
 				C25A03741C8E002E008092BC /* main.m in Sources */,
 				C2B050EF1C95175F00624EF8 /* PhotoUrls.m in Sources */,

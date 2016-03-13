@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "PhotoUrls.h"
 #import "PhotoCell.h"
+#import "HMPhotoBrowserController.h"
 
 NSString *const demoCellIdentifier = @"demoCellIdentifier";
 
@@ -48,13 +49,19 @@ NSString *const demoCellIdentifier = @"demoCellIdentifier";
 
 #pragma mark - PhotoCellDelegate
 - (void)photoCell:(PhotoCell *)cell didSelectedImageIndex:(NSInteger)index {
-    NSLog(@"%zd", index);
     
     NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
     
     if (indexPath == nil) {
         return;
     }
+    
+    HMPhotoBrowserController *browser = [HMPhotoBrowserController
+                                         photoBrowserWithSelectedIndex:index
+                                         urls:_photoList[indexPath.row].pic_urls
+                                         parentImageViews:[cell visibaleImageViews]];
+    
+    [self presentViewController:browser animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSource
