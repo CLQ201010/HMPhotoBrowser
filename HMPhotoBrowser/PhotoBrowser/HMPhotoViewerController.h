@@ -19,4 +19,6 @@
 /// @return 单图查看器
 + (nonnull instancetype)viewerWithURLString:(NSString * _Nonnull)urlString photoIndex:(NSInteger)photoIndex;
 
+@property (nonatomic) NSInteger photoIndex;
+
 @end

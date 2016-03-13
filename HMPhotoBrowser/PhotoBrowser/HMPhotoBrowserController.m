@@ -10,7 +10,7 @@
 #import "HMPhotoBrowserPhotos.h"
 #import "HMPhotoViewerController.h"
 
-@interface HMPhotoBrowserController ()
+@interface HMPhotoBrowserController () <UIPageViewControllerDataSource>
 
 @end
 
@@ -43,7 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     [self prepareUI];
 }
 
@@ -76,17 +76,54 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UIPageViewControllerDataSource
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(HMPhotoViewerController *)viewController {
+    
+    NSInteger index = viewController.photoIndex;
+    
+    if (index-- <= 0) {
+        return nil;
+    }
+    
+    return [self viewerWithIndex:index];
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(HMPhotoViewerController *)viewController {
+    
+    NSInteger index = viewController.photoIndex;
+    
+    if (++index >= _photos.urls.count) {
+        return nil;
+    }
+    
+    return [self viewerWithIndex:index];
+}
+
+- (HMPhotoViewerController *)viewerWithIndex:(NSInteger)index {
+    return [HMPhotoViewerController viewerWithURLString:_photos.urls[index] photoIndex:index];
+}
+
 #pragma mark - 设置界面
 - (void)prepareUI {
-    self.view.backgroundColor = [UIColor orangeColor];
-
-    HMPhotoViewerController *viewer = [HMPhotoViewerController
-                                       viewerWithURLString:_photos.urls[_photos.selectedIndex]
-                                       photoIndex:_photos.selectedIndex];
+    self.view.backgroundColor = [UIColor blackColor];
     
-    [self.view addSubview:viewer.view];
-    [self addChildViewController:viewer];
-    [viewer didMoveToParentViewController:self];
+    UIPageViewController *pageController = [[UIPageViewController alloc]
+                                            initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                            navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                            options:@{UIPageViewControllerOptionInterPageSpacingKey: @20}];
+    pageController.dataSource = self;
+    
+    HMPhotoViewerController *viewer = [self viewerWithIndex:_photos.selectedIndex];
+    [pageController setViewControllers:@[viewer]
+                             direction:UIPageViewControllerNavigationDirectionForward
+                              animated:YES
+                            completion:nil];
+    
+    [self.view addSubview:pageController.view];
+    [self addChildViewController:pageController];
+    [pageController didMoveToParentViewController:self];
+    
+    self.view.gestureRecognizers = pageController.gestureRecognizers;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.view addGestureRecognizer:tap];
