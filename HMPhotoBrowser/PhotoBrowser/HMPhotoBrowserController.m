@@ -77,11 +77,12 @@
 }
 
 #pragma mark - 设置界面
-/// 设置界面
 - (void)prepareUI {
     self.view.backgroundColor = [UIColor orangeColor];
 
-    HMPhotoViewerController *viewer = [[HMPhotoViewerController alloc] init];
+    HMPhotoViewerController *viewer = [HMPhotoViewerController
+                                       viewerWithURLString:_photos.urls[_photos.selectedIndex]
+                                       photoIndex:_photos.selectedIndex];
     
     [self.view addSubview:viewer.view];
     [self addChildViewController:viewer];

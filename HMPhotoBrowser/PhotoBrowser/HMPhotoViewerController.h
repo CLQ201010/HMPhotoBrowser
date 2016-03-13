@@ -11,4 +11,12 @@
 /// 单张照片查看控制器 - 显示单张照片使用
 @interface HMPhotoViewerController : UIViewController
 
+/// 实例化单图查看器
+///
+/// @param urlString  urlString 字符串
+/// @param photoIndex 照片索引
+///
+/// @return 单图查看器
++ (nonnull instancetype)viewerWithURLString:(NSString * _Nonnull)urlString photoIndex:(NSInteger)photoIndex;
+
 @end
