@@ -11,7 +11,7 @@
 #import "HMPhotoViewerController.h"
 #import "HMPhotoBrowserAnimator.h"
 
-@interface HMPhotoBrowserController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface HMPhotoBrowserController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @end
 
@@ -20,7 +20,7 @@
     BOOL _statusBarHidden;
     HMPhotoBrowserAnimator *_animator;
     
-    UIImageView *_currentImageView;
+    HMPhotoViewerController *_currentViewer;
 }
 
 #pragma mark - 构造函数
@@ -81,9 +81,45 @@
 
 #pragma mark - 监听方法
 - (void)tapGesture {
-    _animator.fromImageView = _currentImageView;
+    _animator.fromImageView = _currentViewer.imageView;
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)pinchGesture:(UIPinchGestureRecognizer *)recognizer {
+
+    if (_currentViewer.scrollView.zoomScale > 1.0) {
+        self.view.backgroundColor = [UIColor blackColor];
+        self.view.transform = CGAffineTransformIdentity;
+        
+        return;
+    }
+    
+    CGFloat scale = recognizer.scale;
+    CGAffineTransform transfrom = self.view.transform;
+    transfrom = CGAffineTransformScale(transfrom, scale, scale);
+    
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+            self.view.backgroundColor = [UIColor clearColor];
+            self.view.transform = transfrom;
+            break;
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+        case UIGestureRecognizerStateEnded:
+            [self tapGesture];
+            break;
+        default:
+            break;
+    }
+    
+    recognizer.scale = 1.0;
+}
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
 }
 
 #pragma mark - UIPageViewControllerDataSource
@@ -119,7 +155,7 @@
     HMPhotoViewerController *viewer = pageViewController.viewControllers[0];
     
     _photos.selectedIndex = viewer.photoIndex;
-    _currentImageView = viewer.imageView;
+    _currentViewer = viewer;
 }
 
 #pragma mark - 设置界面
@@ -147,8 +183,12 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.view addGestureRecognizer:tap];
+    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
+    [self.view addGestureRecognizer:pinch];
     
-    _currentImageView = viewer.imageView;
+    pinch.delegate = self;
+    
+    _currentViewer = viewer;
 }
 
 @end
