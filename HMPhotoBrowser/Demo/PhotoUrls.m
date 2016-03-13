@@ -20,6 +20,7 @@
         NSAssert(count > 0 && count < 10, @"count 必须在 1~9 之间");
         
         NSArray <NSString *> *array = @[@"http://ww2.sinaimg.cn/bmiddle/72635b6agw1eyqehvujq1j218g0p0qai.jpg",
+                                        @"http://ww2.sinaimg.cn/bmiddle/e67669aagw1f1v6w3ya5vj20hk0qfq86.jpg",
                                         @"http://ww4.sinaimg.cn/bmiddle/7f02d774gw1f1dxhgmh3mj20cs1tdaiv.jpg",
                                         @"http://ww2.sinaimg.cn/bmiddle/72635b6agw1eyqehod8k8j218g0p0tge.jpg",
                                         @"http://ww2.sinaimg.cn/bmiddle/72635b6agw1eyqehp1eufj218g0p0n7q.jpg",

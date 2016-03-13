@@ -9,7 +9,7 @@
 #import "HMPhotoViewerController.h"
 @import YYWebImage;
 
-@interface HMPhotoViewerController ()
+@interface HMPhotoViewerController () <UIScrollViewDelegate>
 
 @end
 
@@ -42,6 +42,11 @@
     [self loadImage];
 }
 
+#pragma mark - UIScrollViewDelegate
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return _imageView;
+}
+
 #pragma mark - 照片相关
 - (void)loadImage {
     
@@ -69,7 +74,7 @@
     if (size.height < _scrollView.bounds.size.height) {
         CGFloat offsetY = (_scrollView.bounds.size.height - size.height) * 0.5;
         
-        _imageView.frame = CGRectOffset(_imageView.frame, 0, offsetY);
+        _scrollView.contentInset = UIEdgeInsetsMake(offsetY, 0, offsetY, 0);
     }
 }
 
@@ -87,6 +92,10 @@
     
     _imageView = [[UIImageView alloc] init];
     [_scrollView addSubview:_imageView];
+    
+    _scrollView.maximumZoomScale = 2.0;
+    _scrollView.minimumZoomScale = 1.0;
+    _scrollView.delegate = self;
 }
 
 @end
