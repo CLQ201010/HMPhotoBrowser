@@ -56,9 +56,28 @@
              return;
          }
          
-         _imageView.image = image;
-         [_imageView sizeToFit];
+         [self setImagePosition:image];
      }];
+}
+
+- (void)setImagePosition:(UIImage *)image {
+    CGSize size = [self imageSizeWithScreen:image];
+    
+    _imageView.frame = CGRectMake(0, 0, size.width, size.height);
+    _scrollView.contentSize = size;
+    
+    if (size.height < _scrollView.bounds.size.height) {
+        CGFloat offsetY = (_scrollView.bounds.size.height - size.height) * 0.5;
+        
+        _imageView.frame = CGRectOffset(_imageView.frame, 0, offsetY);
+    }
+}
+
+- (CGSize)imageSizeWithScreen:(UIImage *)image {
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    size.height = image.size.height * size.width / image.size.width;
+    
+    return size;
 }
 
 #pragma mark - 设置界面
