@@ -136,12 +136,13 @@
 - (void)dismissTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     
     UIView *containerView = [transitionContext containerView];
+    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
     
     UIImageView *dummyIV = [self dummyImageView];
     dummyIV.frame = [containerView convertRect:_fromImageView.frame fromView:_fromImageView.superview];
+    dummyIV.alpha = fromView.alpha;
     [containerView addSubview:dummyIV];
     
-    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
     [fromView removeFromSuperview];
     
     UIImageView *parentIV = [self parentImageView];
@@ -149,6 +150,7 @@
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         dummyIV.frame = targetRect;
+        dummyIV.alpha = 1.0;
     } completion:^(BOOL finished) {
         [dummyIV removeFromSuperview];
         

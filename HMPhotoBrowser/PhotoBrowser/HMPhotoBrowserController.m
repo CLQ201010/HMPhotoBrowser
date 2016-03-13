@@ -94,6 +94,7 @@
     if (_statusBarHidden) {
         self.view.backgroundColor = [UIColor blackColor];
         self.view.transform = CGAffineTransformIdentity;
+        self.view.alpha = 1.0;
         
         return;
     }
@@ -121,6 +122,8 @@
         case UIGestureRecognizerStateChanged:
             self.view.backgroundColor = [UIColor clearColor];
             self.view.transform = transfrom;
+            self.view.alpha = transfrom.a;
+            
             break;
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateFailed:
