@@ -8,6 +8,7 @@
 
 #import "HMPhotoViewerController.h"
 @import YYWebImage;
+#import "HMPhotoProgressView.h"
 
 @interface HMPhotoViewerController () <UIScrollViewDelegate>
 
@@ -16,21 +17,25 @@
 @implementation HMPhotoViewerController {
     UIScrollView *_scrollView;
     UIImageView *_imageView;
+    HMPhotoProgressView *_progressView;
     
     NSURL *_url;
     NSInteger _photoIndex;
+    UIImage *_placeholder;
 }
 
 #pragma mark - 构造函数
-+ (instancetype)viewerWithURLString:(NSString *)urlString photoIndex:(NSInteger)photoIndex {
-    return [[self alloc] initWithURLString:urlString photoIndex:photoIndex];
++ (instancetype)viewerWithURLString:(NSString *)urlString photoIndex:(NSInteger)photoIndex placeholder:(UIImage *)placeholder {
+    return [[self alloc] initWithURLString:urlString photoIndex:photoIndex placeholder:placeholder];
 }
 
-- (instancetype)initWithURLString:(NSString *)urlString photoIndex:(NSInteger)photoIndex {
+- (instancetype)initWithURLString:(NSString *)urlString photoIndex:(NSInteger)photoIndex placeholder:(UIImage *)placeholder {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        urlString = [urlString stringByReplacingOccurrencesOfString:@"/bmiddle/" withString:@"/large/"];
         _url = [NSURL URLWithString:urlString];
         _photoIndex = photoIndex;
+        _placeholder = placeholder;
     }
     return self;
 }
@@ -50,19 +55,15 @@
 #pragma mark - 照片相关
 - (void)loadImage {
     
-    [_imageView yy_setImageWithURL: _url placeholder:nil options:0 completion:^
-     (UIImage * _Nullable image,
-      NSURL * _Nonnull url,
-      YYWebImageFromType from,
-      YYWebImageStage stage,
-      NSError * _Nullable error) {
-         
-         if (image == nil) {
-             return;
-         }
-         
-         [self setImagePosition:image];
-     }];
+    [_imageView yy_setImageWithURL:_url placeholder:_placeholder options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        _progressView.progress = (float)receivedSize / expectedSize;
+    } transform:nil completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+        if (image == nil) {
+            return;
+        }
+        
+        [self setImagePosition:image];
+    }];
 }
 
 - (void)setImagePosition:(UIImage *)image {
@@ -90,8 +91,15 @@
     _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:_scrollView];
     
-    _imageView = [[UIImageView alloc] init];
+    _imageView = [[UIImageView alloc] initWithImage:_placeholder];
+    _imageView.center = self.view.center;
     [_scrollView addSubview:_imageView];
+    
+    _progressView = [[HMPhotoProgressView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
+    _progressView.center = self.view.center;
+    [self.view addSubview:_progressView];
+    
+    _progressView.progress = 1.0;
     
     _scrollView.maximumZoomScale = 2.0;
     _scrollView.minimumZoomScale = 1.0;

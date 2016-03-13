@@ -208,7 +208,7 @@
 }
 
 - (HMPhotoViewerController *)viewerWithIndex:(NSInteger)index {
-    return [HMPhotoViewerController viewerWithURLString:_photos.urls[index] photoIndex:index];
+    return [HMPhotoViewerController viewerWithURLString:_photos.urls[index] photoIndex:index placeholder:_photos.parentImageViews[index].image];
 }
 
 #pragma mark - UIPageViewControllerDelegate

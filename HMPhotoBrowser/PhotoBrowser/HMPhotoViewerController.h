@@ -13,11 +13,12 @@
 
 /// 实例化单图查看器
 ///
-/// @param urlString  urlString 字符串
-/// @param photoIndex 照片索引
+/// @param urlString   urlString 字符串
+/// @param photoIndex  照片索引
+/// @param placeholder 占位图像
 ///
 /// @return 单图查看器
-+ (nonnull instancetype)viewerWithURLString:(NSString * _Nonnull)urlString photoIndex:(NSInteger)photoIndex;
++ (nonnull instancetype)viewerWithURLString:(NSString * _Nonnull)urlString photoIndex:(NSInteger)photoIndex placeholder:(UIImage * _Nonnull)placeholder;
 
 @property (nonatomic) NSInteger photoIndex;
 
