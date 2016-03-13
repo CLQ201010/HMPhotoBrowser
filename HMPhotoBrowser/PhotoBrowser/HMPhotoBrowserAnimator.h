@@ -19,4 +19,7 @@
 /// @return 照片浏览动画器
 + (nonnull instancetype)animatorWithPhotos:(HMPhotoBrowserPhotos * _Nonnull)photos;
 
+/// 解除转场当前显示的图像视图
+@property (nonatomic, nonnull) UIImageView *fromImageView;
+
 @end

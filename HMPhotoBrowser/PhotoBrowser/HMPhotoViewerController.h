@@ -20,5 +20,6 @@
 + (nonnull instancetype)viewerWithURLString:(NSString * _Nonnull)urlString photoIndex:(NSInteger)photoIndex;
 
 @property (nonatomic) NSInteger photoIndex;
+@property (nonatomic, readonly, nonnull) UIImageView *imageView;
 
 @end

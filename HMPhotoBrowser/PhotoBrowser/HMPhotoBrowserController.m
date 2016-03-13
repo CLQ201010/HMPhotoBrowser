@@ -11,7 +11,7 @@
 #import "HMPhotoViewerController.h"
 #import "HMPhotoBrowserAnimator.h"
 
-@interface HMPhotoBrowserController () <UIPageViewControllerDataSource>
+@interface HMPhotoBrowserController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
 @end
 
@@ -19,6 +19,8 @@
     HMPhotoBrowserPhotos *_photos;
     BOOL _statusBarHidden;
     HMPhotoBrowserAnimator *_animator;
+    
+    UIImageView *_currentImageView;
 }
 
 #pragma mark - 构造函数
@@ -79,6 +81,8 @@
 
 #pragma mark - 监听方法
 - (void)tapGesture {
+    _animator.fromImageView = _currentImageView;
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -109,6 +113,15 @@
     return [HMPhotoViewerController viewerWithURLString:_photos.urls[index] photoIndex:index];
 }
 
+#pragma mark - UIPageViewControllerDelegate
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
+    
+    HMPhotoViewerController *viewer = pageViewController.viewControllers[0];
+    
+    _photos.selectedIndex = viewer.photoIndex;
+    _currentImageView = viewer.imageView;
+}
+
 #pragma mark - 设置界面
 - (void)prepareUI {
     self.view.backgroundColor = [UIColor blackColor];
@@ -118,6 +131,7 @@
                                             navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                                             options:@{UIPageViewControllerOptionInterPageSpacingKey: @20}];
     pageController.dataSource = self;
+    pageController.delegate = self;
     
     HMPhotoViewerController *viewer = [self viewerWithIndex:_photos.selectedIndex];
     [pageController setViewControllers:@[viewer]
@@ -133,6 +147,8 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
     [self.view addGestureRecognizer:tap];
+    
+    _currentImageView = viewer.imageView;
 }
 
 @end

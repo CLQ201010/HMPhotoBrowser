@@ -76,6 +76,7 @@
         [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
             toView.alpha = 1.0;
         } completion:^(BOOL finished) {
+            [dummyIV removeFromSuperview];
             
             [transitionContext completeTransition:YES];
         }];
@@ -131,17 +132,29 @@
     return _photos.parentImageViews[_photos.selectedIndex];
 }
 
+#pragma mark - 解除转场动画方法
 - (void)dismissTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     
     UIView *containerView = [transitionContext containerView];
+    
+    UIImageView *dummyIV = [self dummyImageView];
+    dummyIV.frame = [containerView convertRect:_fromImageView.frame fromView:_fromImageView.superview];
+    
+    [containerView addSubview:dummyIV];
+    
     UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    [fromView removeFromSuperview];
+    
+    UIImageView *parentIV = [self parentImageView];
+    CGRect targetRect = [containerView convertRect:parentIV.frame fromView:parentIV.superview];
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
-        fromView.alpha = 0.0;
+        dummyIV.frame = targetRect;
     } completion:^(BOOL finished) {
+        [dummyIV removeFromSuperview];
+        
         [transitionContext completeTransition:YES];
     }];
 }
-
 
 @end
