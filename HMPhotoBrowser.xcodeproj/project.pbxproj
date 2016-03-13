@@ -19,6 +19,7 @@
 		C2B050F91C951AB300624EF8 /* HMPhotoViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050F81C951AB300624EF8 /* HMPhotoViewerController.m */; };
 		C2B050FC1C951B0300624EF8 /* HMPhotoBrowserPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050FB1C951B0300624EF8 /* HMPhotoBrowserPhotos.m */; };
 		C2B050FF1C951C0D00624EF8 /* HMPhotoBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */; };
+		C2B0512C1C95658E00624EF8 /* HMPhotoBrowserAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B0512B1C95658E00624EF8 /* HMPhotoBrowserAnimator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,8 @@
 		C2B050FB1C951B0300624EF8 /* HMPhotoBrowserPhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMPhotoBrowserPhotos.m; sourceTree = "<group>"; };
 		C2B050FD1C951C0D00624EF8 /* HMPhotoBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMPhotoBrowserController.h; sourceTree = "<group>"; };
 		C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMPhotoBrowserController.m; sourceTree = "<group>"; };
+		C2B0512A1C95658E00624EF8 /* HMPhotoBrowserAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMPhotoBrowserAnimator.h; sourceTree = "<group>"; };
+		C2B0512B1C95658E00624EF8 /* HMPhotoBrowserAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMPhotoBrowserAnimator.m; sourceTree = "<group>"; };
 		E45CFE3131DB15C9E4719108 /* Pods_HMPhotoBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HMPhotoBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -138,6 +141,8 @@
 				C2B050FE1C951C0D00624EF8 /* HMPhotoBrowserController.m */,
 				C2B050F71C951AB300624EF8 /* HMPhotoViewerController.h */,
 				C2B050F81C951AB300624EF8 /* HMPhotoViewerController.m */,
+				C2B0512A1C95658E00624EF8 /* HMPhotoBrowserAnimator.h */,
+				C2B0512B1C95658E00624EF8 /* HMPhotoBrowserAnimator.m */,
 				C2B051001C951C3700624EF8 /* Model */,
 			);
 			path = PhotoBrowser;
@@ -280,6 +285,7 @@
 				C2B050FF1C951C0D00624EF8 /* HMPhotoBrowserController.m in Sources */,
 				C25A038B1C8E03C9008092BC /* MainViewController.m in Sources */,
 				C25A03741C8E002E008092BC /* main.m in Sources */,
+				C2B0512C1C95658E00624EF8 /* HMPhotoBrowserAnimator.m in Sources */,
 				C2B050EF1C95175F00624EF8 /* PhotoUrls.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

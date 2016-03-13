@@ -9,6 +9,7 @@
 #import "HMPhotoBrowserController.h"
 #import "HMPhotoBrowserPhotos.h"
 #import "HMPhotoViewerController.h"
+#import "HMPhotoBrowserAnimator.h"
 
 @interface HMPhotoBrowserController () <UIPageViewControllerDataSource>
 
@@ -17,6 +18,7 @@
 @implementation HMPhotoBrowserController {
     HMPhotoBrowserPhotos *_photos;
     BOOL _statusBarHidden;
+    HMPhotoBrowserAnimator *_animator;
 }
 
 #pragma mark - 构造函数
@@ -37,6 +39,10 @@
         _photos.parentImageViews = parentImageViews;
         
         _statusBarHidden = NO;
+        
+        self.modalPresentationStyle = UIModalPresentationCustom;
+        _animator = [[HMPhotoBrowserAnimator alloc] init];
+        self.transitioningDelegate = _animator;
     }
     return self;
 }
