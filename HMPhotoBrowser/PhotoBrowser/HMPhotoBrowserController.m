@@ -22,6 +22,7 @@
     
     HMPhotoViewerController *_currentViewer;
     UIButton *_pageCountButton;
+    UILabel *_messageLabel;
 }
 
 #pragma mark - 构造函数
@@ -138,6 +139,46 @@
     }
 }
 
+- (void)longPressGesture:(UILongPressGestureRecognizer *)recognizer {
+    
+    if (recognizer.state != UIGestureRecognizerStateBegan) {
+        return;
+    }
+    if (_currentViewer.imageView.image == nil) {
+        return;
+    }
+    
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"保存至相册" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        UIImageWriteToSavedPhotosAlbum(_currentViewer.imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    }]];
+    [actionSheet addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:actionSheet animated:YES completion:nil];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    
+    NSString *message = (error == nil) ? @"保存成功" : @"保存失败";
+    
+    _messageLabel.text = message;
+    
+    [UIView
+     animateWithDuration:0.7
+     delay:0
+     usingSpringWithDamping:0.8
+     initialSpringVelocity:10
+     options:0
+     animations:^{
+         _messageLabel.transform = CGAffineTransformIdentity;
+     } completion:^(BOOL finished) {
+         [UIView animateWithDuration:0.5 animations:^{
+             _messageLabel.transform = CGAffineTransformMakeScale(0, 0);
+         }];
+     }];
+}
+
 #pragma mark - UIGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;
@@ -199,6 +240,7 @@
 - (void)prepareUI {
     self.view.backgroundColor = [UIColor blackColor];
     
+    // 分页控制器
     UIPageViewController *pageController = [[UIPageViewController alloc]
                                             initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
                                             navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
@@ -216,6 +258,9 @@
     [self addChildViewController:pageController];
     [pageController didMoveToParentViewController:self];
     
+    _currentViewer = viewer;
+    
+    // 手势识别
     self.view.gestureRecognizers = pageController.gestureRecognizers;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture)];
@@ -224,12 +269,13 @@
     [self.view addGestureRecognizer:pinch];
     UIRotationGestureRecognizer *rotate = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(interactiveGesture:)];
     [self.view addGestureRecognizer:rotate];
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)];
+    [self.view addGestureRecognizer:longPress];
     
     pinch.delegate = self;
     rotate.delegate = self;
     
-    _currentViewer = viewer;
-    
+    // 分页按钮
     _pageCountButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 80, 40)];
     CGPoint center = self.view.center;
     center.y = _pageCountButton.bounds.size.height;
@@ -241,6 +287,18 @@
     _pageCountButton.backgroundColor = [UIColor colorWithWhite:0.6 alpha:0.6];
     [self setPageButtonIndex:_photos.selectedIndex];
     [self.view addSubview:_pageCountButton];
+    
+    // 提示标签
+    _messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 120, 60)];
+    _messageLabel.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.6];
+    _messageLabel.textColor = [UIColor whiteColor];
+    _messageLabel.textAlignment = NSTextAlignmentCenter;
+    _messageLabel.layer.cornerRadius = 6;
+    _messageLabel.layer.masksToBounds = YES;
+    _messageLabel.transform = CGAffineTransformMakeScale(0, 0);
+    
+    _messageLabel.center = self.view.center;
+    [self.view addSubview:_messageLabel];
 }
 
 @end
