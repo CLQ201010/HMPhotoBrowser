@@ -7,7 +7,7 @@
 //
 
 #import "HMPhotoViewerController.h"
-@import YYWebImage;
+#import <YYWebImage/YYWebImage.h>
 #import "HMPhotoProgressView.h"
 
 @interface HMPhotoViewerController () <UIScrollViewDelegate>

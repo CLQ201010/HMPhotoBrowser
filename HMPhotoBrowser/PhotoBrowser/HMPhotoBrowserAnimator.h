@@ -6,7 +6,7 @@
 //  Copyright © 2016年 itcast. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 @class HMPhotoBrowserPhotos;
 
 /// 照片浏览动画器

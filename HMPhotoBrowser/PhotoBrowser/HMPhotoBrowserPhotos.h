@@ -6,7 +6,7 @@
 //  Copyright © 2016年 itcast. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 /// 浏览照片模型
 @interface HMPhotoBrowserPhotos : NSObject
