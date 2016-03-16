@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "HMPhotoBrowser"
-  s.version      = "1.0.4"
+  s.version      = "1.0.5"
   s.summary      = "轻量级图片浏览器"
   s.homepage     = "https://github.com/itheima-developer/HMPhotoBrowser"
   s.license      = "MIT"
