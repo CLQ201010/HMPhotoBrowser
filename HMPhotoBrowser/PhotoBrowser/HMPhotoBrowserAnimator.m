@@ -7,7 +7,7 @@
 //
 
 #import "HMPhotoBrowserAnimator.h"
-#import <YYWebImage/YYWebImage.h>
+#import "YYWebImage/YYWebImage.h"
 #import "HMPhotoBrowserPhotos.h"
 
 @interface HMPhotoBrowserAnimator() <UIViewControllerAnimatedTransitioning>

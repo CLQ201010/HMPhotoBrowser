@@ -8,8 +8,8 @@
 
 #import "PhotoCell.h"
 #import "PhotoUrls.h"
+#import "YYWebImage/YYWebImage.h"
 @import Masonry;
-@import YYWebImage;
 
 /// 图像 Cell 布局
 typedef struct PhotoCellLayout {
